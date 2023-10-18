@@ -18,7 +18,7 @@ static int overrideNextCallMax = -1;
 static int overrideNextNotif = -1;
 
 __declspec(dllexport) extern bool Load() {
-  if (std::string(GameVersion) != "421471") {
+  if (std::string(GameVersion) != "421631") {
     LOG(ERR) << "Region Set : Wrong version";
     return false;
   }
@@ -28,7 +28,7 @@ __declspec(dllexport) extern bool Load() {
   HookLambda(MH::GuidingLands::AddRegionXp, [](longlong this_ptr, int region,
                                                int amount) {
     if (amount % 10000 == 0 && amount < 0) {
-      auto currentXp = *(int *)(this_ptr + 0x27b928 + region * 4);
+      auto currentXp = *(int *)(this_ptr + 0x269b30 + region * 4);
       int selectedLevel = -amount / 10000;
 
       overrideNextNotif = selectedLevel;
@@ -40,7 +40,7 @@ __declspec(dllexport) extern bool Load() {
 
   HookLambda(MH::GuidingLands::LowerUI::Init_, [](longlong p1, longlong *p2) {
     auto player = MH::Player::GetPlayer(*(undefined **)MH::Player::BasePtr);
-    overrideNextCallMax = *(player + 0x27ba08 + *(int *)(p1 + 0x10));
+    overrideNextCallMax = *(player + 0x269c10 + *(int *)(p1 + 0x10));
     original(p1, p2);
   });
 
